@@ -1,0 +1,77 @@
+@import url(http://fonts.googleapis.com/css?family=Poiret+One);
+
+body{ background-color: #eee; vertical-align: top; }
+
+.r{ color: #ff4444; }
+.lb{ color: #33b5e5; }
+.db{ color:#558cff; }
+.y{ color: #ffc754; }
+
+
+header{ color: #333; font-family: 'Poiret One', sans-serif; }
+#logo{
+	background-color: #eee;
+	display: inline-block;
+	border-top: 4px solid #33b5e5;
+	border-right: 4px solid #ff4444;
+	border-bottom: 4px solid #558cff;
+	border-left: 4px solid #ffc754;
+	margin: 25px;
+	min-width: 50px;
+	min-height: 50px;
+	vertical-align: middle;
+}
+#title{ color: #444; display: inline-block; vertical-align: middle; }
+#gridSize{ margin-top: 100px; }
+#gridSize > input{
+	background: none; 
+	border: none; 
+	border-radius: 0px; 
+	box-shadow: none; 
+	color: inherit; 
+	font-size: 96px; 
+	line-height: 100px; 
+	height: 100px; 
+	text-align: center; 
+	width: 60px; 
+}
+#gridSize > sup{ vertical-align: text-top; font-size: 36px; }
+
+#grid{ margin-top: 100px; }
+.dot{
+	background-color: #999;
+	border-radius: 15px;
+	border: 1px solid #999;
+	cursor: pointer;
+	display: inline-block;
+	margin: 25px;
+	min-height: 15px;
+	min-width: 15px; 
+	position: relative;
+	z-index: 100;
+}
+#line { z-index: 1; }
+
+.opponent-clicked { background-color: #ff4444; border-color: #ff4444; }
+
+.btn-pressed{ border: 2px solid #333; }
+
+#info {
+	font-family: 'Poiret One', sans-serif;
+	margin: 0px 20px;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+}
+#info #moreModalLink{line-height: 40px; height: 40px; margin: 0px;}
+#info #playerScore, #info #opponentScore {
+	background: none; border-radius: 0px;
+	border: none;
+	box-shadow: none;
+	font-size: 36px;
+	line-height: 40px;
+	height: 40px;
+	max-width: 40px;
+	text-align: right;
+}
