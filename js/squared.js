@@ -1,25 +1,35 @@
 var lastOMoveCol = 0;
 var lastOMoveRow = 0;
 var windowHeight = $(window).outerHeight();
+var windowWidth = $(window).outerWidth();
 var headerHeight = $('header').outerHeight();
 var gridHeight = $('#grid').outerHeight();
-if( windowHeight > (gridHeight + headerHeight) )
+var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+
+if( (windowHeight > (gridHeight + headerHeight)) && (windowWidth > windowHeight) ) //No adjustments required
 {
 	var marginTop = (((windowHeight-headerHeight) - gridHeight)/2);
 	$('#grid').css('margin-top',marginTop + 'px');
 }
-else
+else //adjustments required
 {
-	$('#grid').css('margin-top', '0px');
 	$('#info').css('position','relative');
-	$('#moreModalLink').css('position','relative');
+	if(windowWidth > windowHeight)
+	{
+		var gridSpace = windowHeight - headerHeight - $('#info').outerHeight();
+		$('#grid').css('margin-top','0px');
+		$('.dot').css('margin', (gridSpace/(size*3)) + 'px');
+	}
+	else
+	{
+		$('#grid').css('margin-top','0px');
+		$('.dot').css('margin', ($('.container').outerWidth()/(size*5)) + 'px');
+	}
 }
 
 $('.dot').click(function(){
-	if( $('#currentPlayer').val() == 'player' )
-	{
-		if( $('#' + this.id).attr('clicked') == 'false' )
-		{
+	if( $('#currentPlayer').val() == 'player' ){
+		if( $('#' + this.id).attr('clicked') == 'false' ){
 			playerMove(this);
 		}
 	}
@@ -34,22 +44,10 @@ function checkAdjacent(dotid)
 	var east = $("#dot" + (dot.attr('col')*1 + 1) + dot.attr('row'));
 	var west = $("#dot" + (dot.attr('col') - 1) + dot.attr('row'));
 
-	if( north.attr('clicked') == 'true' )
-	{
-		connect(dot.attr('id'),north.attr('id'));
-	}
-	if( south.attr('clicked') == 'true' )
-	{
-		connect(south.attr('id'),dot.attr('id'));
-	}
-	if( east.attr('clicked') == 'true' )
-	{
-		connect(dot.attr('id'),east.attr('id'));
-	}
-	if( west.attr('clicked') == 'true' )
-	{
-		connect(west.attr('id'),dot.attr('id'));
-	}
+	if( north.attr('clicked') == 'true' ) connect(dot.attr('id'),north.attr('id'));
+	if( south.attr('clicked') == 'true' ) connect(south.attr('id'),dot.attr('id'));
+	if( east.attr('clicked') == 'true' ) connect(dot.attr('id'),east.attr('id'));
+	if( west.attr('clicked') == 'true' ) connect(west.attr('id'),dot.attr('id'));
 
 	checkForScore(dot);
 	
@@ -81,60 +79,30 @@ function checkForScore(dot)
 
 		//Check SW square
 		if( west == 'true' )
-		{
 			if( southwest == 'true' )
-			{
 				if( south == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		//Check NW square
 		if( west == 'true' )
-		{
 			if( northwest == 'true' )
-			{
 				if( north == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		//Check NE square
 		if( north == 'true' )
-		{
 			if( northeast == 'true' )
-			{
 				if( east == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		//Check SE square
 		if( east == 'true' )
-		{
 			if( southeast == 'true' )
-			{
 				if( south == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
-		if( $('#currentPlayer').val() == 'player' )
-		{
-			$('#playerScore').val( $('#playerScore').val()*1 + scoreCount );
-		}
-		else
-		{
-			$('#opponentScore').val( $('#opponentScore').val()*1 + scoreCount );
-		}
+		if( $('#currentPlayer').val() == 'player' )	$('#playerScore').val( $('#playerScore').val()*1 + scoreCount );
+		else $('#opponentScore').val( $('#opponentScore').val()*1 + scoreCount );
 	}
 }
 
@@ -156,51 +124,27 @@ function calcScore(dot)
 
 		//Check SW square
 		if( west == 'true' )
-		{
 			if( southwest == 'true' )
-			{
 				if( south == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		//Check NW square
 		if( west == 'true' )
-		{
 			if( northwest == 'true' )
-			{
 				if( north == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		//Check NE square
 		if( north == 'true' )
-		{
 			if( northeast == 'true' )
-			{
 				if( east == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		//Check SE square
 		if( east == 'true' )
-		{
 			if( southeast == 'true' )
-			{
 				if( south == 'true' )
-				{
 					scoreCount++;
-				}
-			}
-		}
 
 		return scoreCount;
 	}
@@ -262,7 +206,8 @@ function drawline(of1,of2)
 
 function playerMove(dot)
 {
-	playersound.playclip();
+	if(!mobile) playersound.playclip();
+	//playersound.playclip();
 	$(dot).addClass('player-clicked');
 	checkAdjacent(dot.id);
 	$(dot).attr('clicked','true');
@@ -300,21 +245,11 @@ function compMove()
 		while(true)
 		{
 			var choice = getRand(1,100);
+			var dotID = "";
 			//Choose highest score
 			if(choice < low){
-
 				var high = chooseOnHighestScore();
-
-				if( typeof high.attr('id') == 'string' )
-				{
-					high.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( high.attr('id') );
-					$('#currentPlayer').val('player');
-					high.attr('clicked','true');
-					checkForEnd();
-					return true;
-				}
+				if( typeof high.attr('id') == 'string' ) dotID = high.attr('id');
 			}
 
 			//Choose based on last move
@@ -326,13 +261,7 @@ function compMove()
 				if( north.attr('clicked') == 'false' )
 				{
 					lastOMoveRow--;
-					north.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( north.attr('id') );
-					$('#currentPlayer').val('player');
-					north.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = north.attr('id');
 				}
 				//Check NE
 				var northeast = $('#dot' + (lastOMoveCol*1+1) + (lastOMoveRow-1));
@@ -340,26 +269,14 @@ function compMove()
 				{
 					lastOMoveCol++;
 					lastOMoveRow--;
-					northeast.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( northeast.attr('id') );
-					$('#currentPlayer').val('player');
-					northeast.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = northeast.attr('id');
 				}
 				//Check E
 				var east = $('#dot' + (lastOMoveCol*1+1) + lastOMoveRow);
 				if( east.attr('clicked') == 'false' )
 				{
 					lastOMoveCol++;
-					east.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( east.attr('id') );
-					$('#currentPlayer').val('player');
-					east.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = east.attr('id');
 				}
 				//Check SE
 				var southeast = $('#dot' + (lastOMoveCol*1+1) + (lastOMoveRow*1+1));
@@ -367,26 +284,14 @@ function compMove()
 				{
 					lastOMoveCol++;
 					lastOMoveRow++;
-					southeast.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( southeast.attr('id') );
-					$('#currentPlayer').val('player');
-					southeast.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = southeast.attr('id');
 				}
 				//Check S
 				var south = $('#dot' + lastOMoveCol + (lastOMoveRow*1+1));
 				if( south.attr('clicked') == 'false' )
 				{
 					lastOMoveRow++;
-					south.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( south.attr('id') );
-					$('#currentPlayer').val('player');
-					south.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = south.attr('id');
 				}
 				//Check SW
 				var southwest = $('#dot' + (lastOMoveCol-1) + (lastOMoveRow*1+1));
@@ -394,26 +299,14 @@ function compMove()
 				{
 					lastOMoveCol--;
 					lastOMoveRow++;
-					southwest.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( southwest.attr('id') );
-					$('#currentPlayer').val('player');
-					southwest.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = southwest.attr('id');
 				}
 				//Check W
 				var west = $('#dot' + (lastOMoveCol-1) + lastOMoveRow);
 				if( west.attr('clicked') == 'false' )
 				{
 					lastOMoveCol--;
-					west.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( west.attr('id') );
-					$('#currentPlayer').val('player');
-					west.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = west.attr('id');
 				}
 				//Check NW
 				var northwest = $('#dot' + (lastOMoveCol-1) + (lastOMoveRow-1));
@@ -421,13 +314,7 @@ function compMove()
 				{
 					lastOMoveCol--;
 					lastOMoveRow--;
-					northwest.addClass('opponent-clicked');
-					opponentsound.playclip();
-					checkAdjacent( northwest.attr('id') );
-					$('#currentPlayer').val('player');
-					northwest.attr('clicked','true');
-					checkForEnd();
-					return true;
+					dotID = northwest.attr('id');
 				}
 			}
 
@@ -444,24 +331,29 @@ function compMove()
 					{
 						lastOMoveCol = col;
 						lastOMoveRow = row;
-						randDot.addClass('opponent-clicked');
-						opponentsound.playclip();
-						checkAdjacent( randDot.attr('id') );
-						$('#currentPlayer').val('player');
-						randDot.attr('clicked','true');
-						checkForEnd();
-						return true;
+						dotID = randDot.attr('id');
+						break;
 					}
 				}
+			}
+
+			//If the randomly chosen method found a dot, then mark it
+			if( dotID != "" )
+			{
+				var compDot = $('#' + dotID);
+				compDot.addClass('opponent-clicked');
+				if(!mobile) opponentsound.playclip();
+				checkAdjacent( compDot.attr('id') );
+				$('#currentPlayer').val('player');
+				compDot.attr('clicked','true');
+				checkForEnd();
+				return true;
 			}
 		}
 	}
 }
 
-function getRand(min,max)
-{
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
+function getRand(min,max){ return Math.floor(Math.random()*(max-min+1)+min); }
 
 function checkForEnd()
 {
@@ -471,18 +363,10 @@ function checkForEnd()
 	var possiblePoints = (size-1) * (size-1);
 	if( possiblePoints == totalScore )
 	{
-		if( pScore < oScore )
-		{
-			$('#endGameModal #modalBody').html('<h1>You Lose!</h1>');
-		}
-		else if( pScore > oScore )
-		{
-			$('#endGameModal #modalBody').html('<h1>You Win!</h1>');
-		}
-		else
-		{
-			$('#endGameModal #modalBody').html('<h1>You Tied!</h1>');
-		}
+		if( pScore < oScore ) $('#endGameModal #modalBody').html('<h1>You Lose!</h1>');
+		else if( pScore > oScore ) $('#endGameModal #modalBody').html('<h1>You Win!</h1>');
+		else $('#endGameModal #modalBody').html('<h1>You Tied!</h1>');
+
 		$('#endGameModal').modal('show');
 		return true;
 	}
