@@ -91,7 +91,6 @@ function connect(id1,id2)
  * been clicked.
  */
 function checkForScore(dot) {
-	//Only necessary if we haven't already checked this dot
 	if( dot.attr('clicked') == 'false' ) {
 		var x = dot.attr('col')*1;
 		var y = dot.attr('row')*1;
