@@ -1,3 +1,9 @@
+/**
+ * This is the logic for the game. It handles executing all
+ * player moves as well as determining where the computer
+ * will move in response.
+ */
+
 var lastOMoveCol = 0;
 var lastOMoveRow = 0;
 var windowHeight = $(window).outerHeight();
