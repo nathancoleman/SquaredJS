@@ -32,7 +32,6 @@
 				<a class="btn difficultyPicker" value="easy" alt="Easy" style="background:none;border:none;box-shadow:none;color:#333;font-weight:bold;margin-top:20px;">easy</a>
 				<a class="btn difficultyPicker" value="medium" alt="Medium" style="background:none;border:none;box-shadow:none;color:#999;font-weight:bold;margin-top:20px;margin-top:20px;">med</a>
 				<a class="btn difficultyPicker" value="hard" alt="Hard" style="background:none;border:none;box-shadow:none;color:#999;font-weight:bold;margin-top:20px;">hard</a>
-				<!--<button type="submit" class="btn btn-med">GO</button>-->
 			</div>
 		</form>
 
