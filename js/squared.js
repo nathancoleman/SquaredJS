@@ -149,6 +149,7 @@ function checkForScore(dot) {
 	}
 }
 
+
 /**
  * Determine the possible "score", or how many connections a
  * move on this dot will make.
@@ -223,6 +224,7 @@ function chooseOnHighestScore() {
 	return $(bestChoice);
 }
 
+
 /**
  * Draw a line to connect 2 dots. This is done by drawing a div
  * with borders which has no space in the center and is stretched
@@ -260,6 +262,7 @@ function drawline(of1, of2) {
 		htmlLine.css('background-color', opponentColor);
 	}
 }
+
 
 /**
  * Make a move on the dot that the player clicked on. This will
@@ -421,12 +424,14 @@ function compMove() {
 	}
 }
 
+
 /**
  * Get a random integer value between min and max
  */
 function getRand(min, max) {
 	return Math.floor(Math.random()*(max-min+1)+min);
 }
+
 
 /**
  * Determine whether the game is over. This is done by subtracting
