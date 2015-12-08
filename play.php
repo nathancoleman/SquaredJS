@@ -32,21 +32,16 @@ if( $size == '') header('location:index.html');
 		
 		<div>
 		<div id="grid" class="">
-			<!--<table style="margin: 0px auto;">-->
-			 	<?php 
-					for( $i=1; $i<=$size; $i++)
+		 	<?php 
+				for( $i=1; $i<=$size; $i++)
+				{
+					for( $j=1; $j<=$size; $j++)
 					{
-						//echo '<tr>';
-						for( $j=1; $j<=$size; $j++)
-						{
-							echo '<span id="dot' . $j . $i . '" class="dot" col="' . $j . '" row="' . $i . '" clicked="false"></span>';
-							//echo '<td><span id="dot' . $j . $i . '" class="dot" col="' . $j . '" row="' . $i . '" clicked="false"></span></td>';
-						}
-						echo "<br>";
-						//echo '</tr>';
+						echo '<span id="dot' . $j . $i . '" class="dot" col="' . $j . '" row="' . $i . '" clicked="false"></span>';
 					}
-				?>
-			<!--</table>-->
+					echo "<br>";
+				}
+			?>
 		</div>
 		</div>
 	</div>
