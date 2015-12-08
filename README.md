@@ -13,6 +13,7 @@ A grid-based game of forming squares to get points. Play it [here](https://squar
 
 ### How It Works ###
 _SPOILERS: Play the game first!_
+- The [dots are drawn](https://github.com/nathancoleman/SquaredJS/blob/master/play.php#L36) on screen using a simple PHP loop and the grid size chosen by the player
 - When a [move is made](https://github.com/nathancoleman/SquaredJS/blob/master/js/squared.js#L280), a series of events is triggered:
     - A sound clip is played
     - A CSS class is added to the dot to change the color
